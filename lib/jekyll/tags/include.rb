@@ -107,8 +107,10 @@ eos
           partial = Liquid::Template.parse(source(path, context))
 
           context.stack do
+            original_context = context['include']
             context['include'] = parse_params(context) if @params
             partial.render!(context)
+            context['include'] = original_context
           end
         rescue => e
           raise IncludeTagError.new e.message, File.join(INCLUDES_DIR, @file)
